@@ -47,7 +47,8 @@ public class ParkingLotProcessor implements ParkingInterface {
 	public void getStatusOfParkingLot() {
 		System.out.println("Slot No." + "       " + "Registration No.");
 		for (Entry<Integer, Slot> entry : ParkingUtils.slotToSlotObjMapping.entrySet()) {
-			System.out.println(entry.getKey() + "              " + entry.getValue().getCar_number());
+			if (entry.getValue().getCar_number() != null)
+				System.out.println(entry.getKey() + "              " + entry.getValue().getCar_number());
 		}
 	}
 
@@ -82,7 +83,7 @@ public class ParkingLotProcessor implements ParkingInterface {
 		case status:
 			getStatusOfParkingLot();
 			break;
-			
+
 		default:
 			System.out.println("No Existing Command Found");
 			break;
