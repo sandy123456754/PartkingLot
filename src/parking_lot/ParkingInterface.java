@@ -2,8 +2,7 @@ package parking_lot;
 
 public interface ParkingInterface {
 
-
-	public void getStatusOfParkingLot();
+	void getStatusOfParkingLot();
 
 	void processCreateParkingLot(Integer noOfSlots);
 

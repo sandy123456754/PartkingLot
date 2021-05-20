@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class ParkingLotBootstrap {
 	public static void main(String[] args) throws FileNotFoundException {
-		try (BufferedReader br = new BufferedReader(new FileReader("/input/file_input.txt"));) {
+		try (BufferedReader br = new BufferedReader(new FileReader("./input/file_input.txt"));) {
 
 			List<String> listOfCommands = br.lines().collect(Collectors.toList());
 			ParkingLotProcessor parkingLotProcessor = new ParkingLotProcessor();
