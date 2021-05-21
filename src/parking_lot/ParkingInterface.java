@@ -1,13 +1,15 @@
 package parking_lot;
 
+import com.parkinglot.pojos.ParkingLot;
+
 public interface ParkingInterface {
 
 	void getStatusOfParkingLot();
 
-	void processCreateParkingLot(Integer noOfSlots);
+	Integer processCreateParkingLot(Integer noOfSlots);
 
-	void processGetParkingSlot(String cmdArray);
+	String processGetParkingSlot(String cmdArray);
 
-	void leaveParkingLot(String cmdArray, int i);
+	String leaveParkingLot(String cmdArray, int i);
 
 }

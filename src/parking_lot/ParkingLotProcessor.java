@@ -12,58 +12,6 @@ public class ParkingLotProcessor implements ParkingInterface {
 
 	ParkingLot parkingLot = null;
 
-	@Override
-	public void processCreateParkingLot(Integer noOfSlots) {
-		this.parkingLot = new ParkingLot(noOfSlots);
-	}
-
-	@Override
-	public void processGetParkingSlot(String car_number) {
-		if (parkingLot != null) {
-			Slot allotedSlot = null;
-			for (Slot slot : parkingLot.slots) {
-				if (slot.getVacant()) {
-					slot.setCar_number(car_number);
-					slot.setCheckInTime(LocalTime.now());
-					slot.setVacant(false);
-					allotedSlot = slot;
-					ParkingUtils.slotToSlotObjMapping.put(slot.getAllocated_slot(), slot);
-					break;
-				}
-			}
-			if (allotedSlot != null) {
-				ParkingUtils.slotToSlotObjMapping.put(allotedSlot.getAllocated_slot(), allotedSlot);
-				System.out.println("Allocated slot number: " + allotedSlot.getAllocated_slot());
-
-			} else {
-				System.out.println("Sorry, parking lot is full");
-			}
-		} else {
-			System.out.println("There is no parking lot");
-		}
-	}
-
-	@Override
-	public void getStatusOfParkingLot() {
-		System.out.println("Slot No." + "       " + "Registration No.");
-		for (Entry<Integer, Slot> entry : ParkingUtils.slotToSlotObjMapping.entrySet()) {
-			if (entry.getValue().getCar_number() != null)
-				System.out.println(entry.getKey() + "              " + entry.getValue().getCar_number());
-		}
-	}
-
-	@Override
-	public void leaveParkingLot(String cmdArray, int i) {
-		Slot slot = ParkingUtils.slotToSlotObjMapping.get(i);
-		long hours = ParkingUtils.noOfHoursBetweenTwoDates(slot.getCheckInTime(), LocalTime.now());
-		long charge = 10;
-		if (hours > 2)
-			charge = (hours - 2) * 10;
-		System.out.println("Registration number " + slot.getCar_number() + " with Slot Number " + i
-				+ " is free with Charge " + charge);
-		slot.reset();
-	}
-
 	public void processCommand(String command) {
 		String[] cmdArray = command.split(" ");
 		CommandsEnum cmd = CommandsEnum.valueOf(cmdArray[0]);
@@ -89,6 +37,67 @@ public class ParkingLotProcessor implements ParkingInterface {
 			break;
 		}
 
+	}
+
+	@Override
+	public Integer processCreateParkingLot(Integer noOfSlots) {
+		this.parkingLot = new ParkingLot(noOfSlots);
+		return noOfSlots;
+	}
+
+	@Override
+	public String processGetParkingSlot(String car_number) {
+		String o = null;
+		if (parkingLot != null) {
+			Slot allotedSlot = null;
+			for (Slot slot : parkingLot.slots) {
+				if (slot.getVacant()) {
+					slot.setCar_number(car_number);
+					slot.setCheckInTime(LocalTime.now());
+					slot.setVacant(false);
+					allotedSlot = slot;
+					ParkingUtils.slotToSlotObjMapping.put(slot.getAllocated_slot(), slot);
+					break;
+				}
+			}
+			if (allotedSlot != null) {
+				ParkingUtils.slotToSlotObjMapping.put(allotedSlot.getAllocated_slot(), allotedSlot);
+				o = "Allocated slot number: " + allotedSlot.getAllocated_slot();
+				System.out.println(o);
+				return o;
+			} else {
+				o = "Sorry, parking lot is full";
+				return o;
+			}
+		} else {
+			o = "There is no parking lot";
+			System.out.println(o);
+			return o;
+		}
+	}
+
+	@Override
+	public void getStatusOfParkingLot() {
+		System.out.println("Slot No." + "       " + "Registration No.");
+		for (Entry<Integer, Slot> entry : ParkingUtils.slotToSlotObjMapping.entrySet()) {
+			if (entry.getValue().getCar_number() != null)
+				System.out.println(entry.getKey() + "              " + entry.getValue().getCar_number());
+		}
+
+	}
+
+	@Override
+	public String leaveParkingLot(String cmdArray, int i) {
+		Slot slot = ParkingUtils.slotToSlotObjMapping.get(i);
+		long hours = ParkingUtils.noOfHoursBetweenTwoDates(slot.getCheckInTime(), LocalTime.now());
+		long charge = 10;
+		if (hours > 2)
+			charge = (hours - 2) * 10;
+		String output = "Registration number " + slot.getCar_number() + " with Slot Number " + i
+				+ " is free with Charge " + charge;
+		System.out.println(output);
+		slot.reset();
+		return output;
 	}
 
 }
